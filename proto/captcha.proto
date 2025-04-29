@@ -1,0 +1,14 @@
+syntax = "proto3";
+package captcha;
+option go_package = "github.com/ja7ad/captcha/proto;proto";
+
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.MethodOptions {
+  Captcha captcha = 7564324;
+}
+
+message Captcha {
+  // check_challenge check captcha challenge in rpc method
+  bool check_challenge = 1;
+}
