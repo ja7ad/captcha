@@ -1,0 +1,19 @@
+syntax = "proto3";
+package echo;
+option go_package = "github.com/ja7ad/captcha/_example/protobuf/echo;echo";
+
+import "captcha.proto";
+
+message EchoRequest {
+  string name = 1;
+}
+
+message EchoResponse {
+  string message = 1;
+}
+
+service EchoService {
+  rpc Echo(EchoRequest) returns(EchoResponse) {
+    option(captcha.captcha).check_challenge = true;
+  }
+}
