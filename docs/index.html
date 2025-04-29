@@ -28,13 +28,6 @@
             border: 1px solid #ced4da;
             border-radius: 5px;
             word-break: break-word;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        #challengeValue {
-            flex: 1;
-            margin: 0;
         }
         #errorMessage {
             margin-top: 20px;
@@ -58,62 +51,6 @@
         }
         footer a:hover {
             text-decoration: underline;
-        }
-        .copy-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-            margin-left: 10px;
-        }
-        .copy-btn:hover {
-            opacity: 0.7;
-        }
-        .copy-btn:focus {
-            outline: none;
-        }
-        .copy-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: #0d6efd;
-        }
-        .tooltip {
-            position: relative;
-            display: inline-block;
-        }
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 60px;
-            background-color: #555;
-            color: #fff;
-            text-align: center;
-            border-radius: 5px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -30px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #555 transparent transparent transparent;
-        }
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-        .tooltip.copied .tooltiptext {
-            visibility: visible;
-            opacity: 1;
         }
     </style>
 </head>
@@ -152,12 +89,6 @@
             <div id="challengeKey" style="display: none;">
                 <strong>Challenge Key:</strong>
                 <p id="challengeValue" class="mb-0"></p>
-                <button class="copy-btn tooltip" onclick="copyChallengeKey()">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                    <span class="tooltiptext">Copy</span>
-                </button>
             </div>
         </div>
     </div>
@@ -197,7 +128,6 @@
         wrapper.appendChild(uniqueContainer);
 
         try {
-            // Render provider widget
             if (provider === 'cloudflare') {
                 const cfDiv = document.createElement('div');
                 cfDiv.className = 'cf-turnstile';
@@ -233,7 +163,7 @@
 
     function onSuccess(token) {
         const loadButton = document.getElementById('loadButton');
-        document.getElementById('challengeKey').style.display = 'flex';
+        document.getElementById('challengeKey').style.display = 'block';
         document.getElementById('challengeValue').textContent = token;
         loadButton.disabled = false;
         loadButton.textContent = 'Load CAPTCHA';
@@ -246,25 +176,6 @@
         errorMessage.textContent = `Error: ${error}`;
         loadButton.disabled = false;
         loadButton.textContent = 'Load CAPTCHA';
-    }
-
-    function copyChallengeKey() {
-        const challengeValue = document.getElementById('challengeValue').textContent;
-        const copyButton = document.querySelector('.copy-btn');
-        const tooltip = copyButton.querySelector('.tooltiptext');
-
-        navigator.clipboard.writeText(challengeValue).then(() => {
-            // Show "Copied!" feedback
-            copyButton.classList.add('copied');
-            tooltip.textContent = 'Copied!';
-            setTimeout(() => {
-                copyButton.classList.remove('copied');
-                tooltip.textContent = 'Copy';
-            }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy: ', err);
-            tooltip.textContent = 'Error';
-        });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
